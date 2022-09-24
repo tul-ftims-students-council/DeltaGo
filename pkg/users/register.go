@@ -2,11 +2,13 @@ package users
 
 import (
 	"delta-go/pkg/common/models"
+	"log"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func (h handler) Register(c *fiber.Ctx) error {
+	log.Println("Registering user")
 	body := models.User{}
 
 	// parse body, attach to AddProductRequestBody struct
@@ -20,6 +22,10 @@ func (h handler) Register(c *fiber.Ctx) error {
 	user.Surname = body.Surname
 	user.Email = body.Email
 	user.PhoneNumber = body.PhoneNumber
+
+	if result := h.DB.Where("email = ?", body.Email).First(&user); result.Error == nil {
+		return fiber.NewError(fiber.StatusConflict, "Email already exists")
+	}
 
 	// insert new db entry
 	if result := h.DB.Create(&user); result.Error != nil {
