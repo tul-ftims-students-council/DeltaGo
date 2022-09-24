@@ -10,7 +10,7 @@ import (
 )
 
 func Init() *gorm.DB {
-	url := "postgres://postgres:d9856ae29ffe010d93230ff6b9f310541c699934893e0e53@delta-go-db.internal:8080/delta"
+	url := "postgres://user:n9GQTJC95CmxKE9D4CMpvXqeFPLKaz5Y@dpg-ccnh1qta49940mojcc0g-a.oregon-postgres.render.com/delta_6y61"
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 
 	if err != nil {
