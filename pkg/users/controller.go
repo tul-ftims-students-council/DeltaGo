@@ -16,5 +16,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 
 	routes := app.Group("/users")
 	routes.Post("/register", h.Register)
-	routes.Get("/:id", h.GetUser)
+	routes.Get("/:email", h.GetUser)
 }
