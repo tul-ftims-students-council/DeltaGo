@@ -3,6 +3,7 @@ package main
 import (
 	"delta-go/pkg/common/db"
 	"delta-go/pkg/users"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -17,5 +18,6 @@ func main() {
 
 	users.RegisterRoutes(app, h)
 
-	app.Listen("8080")
+	port := os.Getenv("PORT")
+	app.Listen(port)
 }
