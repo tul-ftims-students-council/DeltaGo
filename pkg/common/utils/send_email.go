@@ -9,8 +9,6 @@ import (
 func SendEmail(email string, subject string, body string) error {
 	c, err := config.LoadConfig()
 
-	fmt.Printf("Sending email to %s", email)
-
 	if err != nil {
 		return err
 	}
@@ -27,6 +25,8 @@ func SendEmail(email string, subject string, body string) error {
 	message := []byte(body)
 
 	auth := smtp.PlainAuth("", from, password, smtpHost)
+
+	fmt.Println("Sending email to " + email)
 
 	if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message); err != nil {
 		return err
