@@ -1,11 +1,15 @@
-FROM golang:1.19
+FROM golang:1.19-alpine
 
-WORKDIR /go/src/app/
+WORKDIR /app
 
-COPY . .
+COPY go.mod ./
+COPY go.sum ./
+RUN go mod download
 
-RUN go mod download -x
+COPY . ./
 
-RUN go install -mod=mod github.com/githubnemo/CompileDaemon
+RUN go build -o /docker-gs-ping
 
-ENTRYPOINT CompileDaemon --build="go build main.go" --command="./main"
+EXPOSE 8080
+
+CMD [ "/docker-gs-ping" ]
