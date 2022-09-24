@@ -9,17 +9,16 @@ import (
 )
 
 func (h handler) GetUser(c *fiber.Ctx) error {
-	email := c.Params("email")
-	fmt.Println("Getting user with email", email)
+	id := c.Params("id")
+	fmt.Println("Getting user with id", id)
 
-	if email == "" || reflect.TypeOf(email).Kind() != reflect.String {
-		return fiber.NewError(fiber.StatusBadRequest, "Invalid email type")
+	if id == "" || reflect.TypeOf(id).Kind() != reflect.Int {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid id")
 	}
 
 	var user models.User
 
-	// TODO: Change responses to use HanldeError from models
-	if result := h.DB.Where("Email == ?", email).First(&user); result.Error != nil {
+	if result := h.DB.First(&user, id); result.Error != nil {
 		return fiber.NewError(fiber.StatusNotFound, result.Error.Error())
 	}
 
