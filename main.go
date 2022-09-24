@@ -8,6 +8,7 @@ import (
 	"delta-go/pkg/users"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
@@ -19,6 +20,8 @@ func main() {
 
 	h := db.Init(&c)
 	app := fiber.New()
+
+	app.Use(cors.New())
 
 	app.Get("/healthz", func(c *fiber.Ctx) error {
 		return c.SendString("Hello, World!")
