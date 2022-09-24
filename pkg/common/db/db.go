@@ -1,7 +1,6 @@
 package db
 
 import (
-	"fmt"
 	"log"
 
 	"delta-go/pkg/common/config"
@@ -12,8 +11,7 @@ import (
 )
 
 func Init(c *config.Config) *gorm.DB {
-	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", c.DBUser, c.DBPass, c.DBHost, c.DBPort, c.DBName)
-	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(c.DBurl), &gorm.Config{})
 
 	if err != nil {
 		log.Fatalln(err)

@@ -6,7 +6,6 @@ import (
 	"delta-go/pkg/common/config"
 	"delta-go/pkg/common/db"
 	"delta-go/pkg/users"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
 )
