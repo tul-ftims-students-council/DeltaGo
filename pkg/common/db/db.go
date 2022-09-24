@@ -1,18 +1,16 @@
 package db
 
 import (
-	"fmt"
 	"log"
 
-	"delta-go/pkg/common/config"
 	"delta-go/pkg/common/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
 
-func Init(c *config.Config) *gorm.DB {
-	url := fmt.Sprintf("postgres://%s:%s@%s:%s/%s", c.DBUser, c.DBPass, c.DBHost, c.DBPort, c.DBName)
+func Init() *gorm.DB {
+	url := "postgres://postgres:d9856ae29ffe010d93230ff6b9f310541c699934893e0e53@delta-go-db.internal:8080/delta"
 	db, err := gorm.Open(postgres.Open(url), &gorm.Config{})
 
 	if err != nil {

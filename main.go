@@ -1,9 +1,6 @@
 package main
 
 import (
-	"log"
-
-	"delta-go/pkg/common/config"
 	"delta-go/pkg/common/db"
 	"delta-go/pkg/users"
 
@@ -11,16 +8,10 @@ import (
 )
 
 func main() {
-	c, err := config.LoadConfig()
-
-	if err != nil {
-		log.Fatalln("Failed at config", err)
-	}
-
-	h := db.Init(&c)
+	h := db.Init()
 	app := fiber.New()
 
 	users.RegisterRoutes(app, h)
 
-	app.Listen(c.Port)
+	app.Listen("8080")
 }
