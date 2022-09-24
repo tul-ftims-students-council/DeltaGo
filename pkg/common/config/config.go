@@ -7,6 +7,9 @@ import (
 type Config struct {
 	Port  string `mapstructure:"PORT"`
 	DBurl string `mapstructure:"DB_URL"`
+
+	SMTPUsername string `mapstructure:"SMTP_USERNAME"`
+	SMTPPassword string `mapstructure:"SMTP_PASSWORD"`
 }
 
 func LoadConfig() (c Config, err error) {

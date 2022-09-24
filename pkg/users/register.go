@@ -44,5 +44,9 @@ func (h handler) Register(c *fiber.Ctx) error {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error.Error())
 	}
 
+	if err := utils.SendEmail(body.Email, "Rejestracja", "Rejestracja przebiegła pomyślnie"); err != nil {
+		fmt.Println(err)
+	}
+
 	return utils.HandleResponse(c, fiber.StatusOK, "Użytkownik został zarejestrowany")
 }
