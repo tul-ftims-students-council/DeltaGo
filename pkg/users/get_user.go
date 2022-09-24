@@ -2,14 +2,19 @@ package users
 
 import (
 	"delta-go/pkg/common/models"
-	"log"
+	"fmt"
+	"reflect"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func (h handler) GetUser(c *fiber.Ctx) error {
 	id := c.Params("id")
-	log.Println("Getting user with id", id)
+	fmt.Println("Getting user with id", id)
+
+	if id == "" || reflect.TypeOf(id).Kind() != reflect.Int {
+		return fiber.NewError(fiber.StatusBadRequest, "Invalid id")
+	}
 
 	var user models.User
 

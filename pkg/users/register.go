@@ -2,13 +2,13 @@ package users
 
 import (
 	"delta-go/pkg/common/models"
-	"log"
+	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func (h handler) Register(c *fiber.Ctx) error {
-	log.Println("Registering user")
+	fmt.Println("Registering user")
 	body := models.User{}
 
 	// parse body, attach to AddProductRequestBody struct
