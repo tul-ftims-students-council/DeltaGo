@@ -26,5 +26,5 @@ func main() {
 
 	users.RegisterRoutes(app, h)
 
-	app.Listen(c.Port)
+	app.Listen(":" + string(c.Port))
 }
