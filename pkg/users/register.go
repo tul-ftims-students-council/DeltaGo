@@ -4,9 +4,11 @@ import (
 	"delta-go/pkg/common/models"
 	"delta-go/pkg/common/utils"
 	"fmt"
+	"os"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v2"
+	"gorm.io/gorm"
 )
 
 type Input struct {
@@ -36,7 +38,7 @@ func (h handler) Register(c *fiber.Ctx) error {
 	user.Email = body.Email
 	user.PhoneNumber = body.PhoneNumber
 
-	if result := h.DB.Where("Email = ?", body.Email).First(&user); result.Error == nil {
+	if result := h.DB.Where("Email = ?", body.Email).First(&user).Error; result != gorm.ErrRecordNotFound {
 		return utils.HandleResponse(c, fiber.StatusConflict, "Użytkownik z takim mailem już istnieje")
 	}
 
@@ -44,7 +46,12 @@ func (h handler) Register(c *fiber.Ctx) error {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error.Error())
 	}
 
-	if err := utils.SendEmail(body.Email, "Rejestracja", "Rejestracja przebiegła pomyślnie"); err != nil {
+	email_body, error := os.ReadFile("./statics/response.html")
+	if error != nil {
+		panic("unable to read response.html")
+	}
+	str := string(email_body)
+	if err := utils.SendEmail(body.Email, "Rejestracja", str); err != nil {
 		fmt.Println(err)
 	}
 

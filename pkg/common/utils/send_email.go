@@ -3,7 +3,8 @@ package utils
 import (
 	"delta-go/pkg/common/config"
 	"fmt"
-	"net/smtp"
+
+	"gopkg.in/gomail.v2"
 )
 
 func SendEmail(email string, subject string, body string) error {
@@ -14,22 +15,21 @@ func SendEmail(email string, subject string, body string) error {
 	}
 
 	smtpHost := "smtp.gmail.com"
-	smtpPort := "587"
+	smtpPort := 587
 	from := c.SMTPUsername
 	password := c.SMTPPassword
 
-	to := []string{
-		email,
-	}
-
-	message := []byte(body)
-
-	auth := smtp.PlainAuth("", from, password, smtpHost)
+	m := gomail.NewMessage()
+	m.SetHeader("From", from)
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", subject)
+	m.SetBody("text/html", body)
 
 	fmt.Println("Sending email to " + email)
 
-	if err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, message); err != nil {
-		return err
+	d := gomail.NewPlainDialer(smtpHost, smtpPort, from, password)
+	if err := d.DialAndSend(m); err != nil {
+		panic(err)
 	}
 
 	return nil
