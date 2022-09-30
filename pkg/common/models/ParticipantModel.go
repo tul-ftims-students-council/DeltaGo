@@ -16,5 +16,5 @@ type Participant struct {
 	PaymentFile    []byte `json:"payment_file" gorm:"type:bytea"`
 	FileExtension  string `json:"file_extension"`
 	InvoiceAddress string `json:"invoice_address"`
-	footSize       string `json:"footSize"`
+	FootSize       string `json:"footSize"`
 }

@@ -19,6 +19,6 @@ func Init(c *config.Config) *gorm.DB {
 
 	db.AutoMigrate(&models.User{})
 	db.AutoMigrate(&models.Place{})
-
+	db.AutoMigrate(&models.Participant{})
 	return db
 }

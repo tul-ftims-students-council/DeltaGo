@@ -18,7 +18,7 @@ type InputFinalizePayment struct {
 	PaymentFile    []byte `validate:"required"`
 	FileExtension  string `validate:"required,min=3"`
 	InvoiceAddress string
-	footSize       string `validate:"required"`
+	FootSize       string `validate:"required"`
 }
 
 func (h handler) FinalizePayment(c *fiber.Ctx) error {
@@ -56,6 +56,7 @@ func (h handler) FinalizePayment(c *fiber.Ctx) error {
 	new_participant.PaymentFile = body.PaymentFile
 	new_participant.FileExtension = body.FileExtension
 	new_participant.InvoiceAddress = body.InvoiceAddress
+	new_participant.FootSize = body.FootSize
 
 	if result := h.DB.Model(&placeChecker).Where("user_email = ?", email).Update("is_sold", "true").Error; result != nil {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error())
