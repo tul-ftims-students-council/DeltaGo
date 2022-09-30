@@ -10,6 +10,7 @@ type Participant struct {
 	Id             int    `json:"id" gorm:"primaryKey"`
 	UserEmail      string `json:"user_email"`
 	Major          string `json:"major"`
+	Faculty        string `json:"faculty"`
 	Year           int    `json:"year"`
 	TShirtSize     string `json:"t_shirt_size"`
 	Diet           string `json:"diet"`

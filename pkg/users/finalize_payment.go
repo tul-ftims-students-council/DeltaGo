@@ -12,6 +12,7 @@ import (
 
 type InputFinalizePayment struct {
 	Major          string `validate:"required,min=4"`
+	Faculty        string `validate:"required"`
 	Year           int    `validate:"required"`
 	TShirtSize     string `validate:"required"`
 	Diet           string `validate:"required"`
@@ -50,6 +51,7 @@ func (h handler) FinalizePayment(c *fiber.Ctx) error {
 
 	new_participant.UserEmail = email
 	new_participant.Major = body.Major
+	new_participant.Faculty = body.Faculty
 	new_participant.Year = body.Year
 	new_participant.TShirtSize = body.TShirtSize
 	new_participant.Diet = body.Diet
