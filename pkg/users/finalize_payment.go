@@ -1,8 +1,12 @@
 package users
 
 import (
+	"bytes"
 	"delta-go/pkg/common/models"
 	"delta-go/pkg/common/utils"
+	"encoding/json"
+	"fmt"
+	"io"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -11,15 +15,15 @@ import (
 )
 
 type InputFinalizePayment struct {
-	Major          string `validate:"required,min=4"`
-	Faculty        string `validate:"required"`
-	Year           int    `validate:"required"`
-	TShirtSize     string `validate:"required"`
-	Diet           string `validate:"required"`
-	PaymentFile    []byte `validate:"required"`
-	FileExtension  string `validate:"required,min=3"`
+	Major          string
+	Faculty        string
+	Year           int
+	TShirtSize     string
+	Diet           string
+	PaymentFile    *fiber.FormFile
+	FileExtension  string
 	InvoiceAddress string
-	FootSize       string `validate:"required"`
+	FootSize       string
 }
 
 func (h handler) FinalizePayment(c *fiber.Ctx) error {
@@ -32,9 +36,25 @@ func (h handler) FinalizePayment(c *fiber.Ctx) error {
 	var user models.User
 	var new_participant models.Participant
 
-	if err := c.BodyParser(&body); err != nil {
+	fmt.Println(1)
+	file, err := c.FormFile("PaymentFile")
+	if err != nil {
+		return utils.HandleResponse(c, fiber.StatusBadRequest, "Invalid PaymentFile")
+	}
+	fmt.Println(1)
+	file_x, err := file.Open()
+	if err != nil {
 		return utils.HandleResponse(c, fiber.StatusBadRequest, err.Error())
 	}
+	fmt.Println(1)
+	buf := bytes.NewBuffer(nil)
+	if _, err := io.Copy(buf, file_x); err != nil {
+		return utils.HandleResponse(c, fiber.StatusBadRequest, err.Error())
+	}
+
+	var bytes []byte
+	fmt.Println(1)
+	bytes, err = json.Marshal(buf)
 
 	validate := validator.New()
 	if err := validate.Struct(body); err != nil {
@@ -55,7 +75,7 @@ func (h handler) FinalizePayment(c *fiber.Ctx) error {
 	new_participant.Year = body.Year
 	new_participant.TShirtSize = body.TShirtSize
 	new_participant.Diet = body.Diet
-	new_participant.PaymentFile = body.PaymentFile
+	new_participant.PaymentFile = bytes
 	new_participant.FileExtension = body.FileExtension
 	new_participant.InvoiceAddress = body.InvoiceAddress
 	new_participant.FootSize = body.FootSize
