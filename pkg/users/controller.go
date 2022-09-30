@@ -18,5 +18,5 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 	routes.Post("/register", h.Register)
 	routes.Get("/:email", h.GetUser)
 	routes.Get("/:email/payment/start", h.StartPayment)
-
+	routes.Post("/:email/payment/send", h.FinalizePayment)
 }
