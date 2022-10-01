@@ -29,9 +29,9 @@ func (h handler) StartPayment(c *fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusNotFound, "user not found")
 	}
 	var placeChecker models.Place
-	format := "2006-01-02 15:04:05"
+	format := "2006-01-02T15:04:05.999Z"
 	TimeNow := time.Now().Local()
-	Time := time.Now().Local().Add(time.Hour * 4).Add(time.Minute * 20)
+	Time := time.Now().Local().Add(time.Minute * 4 + time.Second * 20)
 
 	if result := h.DB.Where("user_email = ? AND is_sold = false AND date_till_expire > ?", email, TimeNow.Format(format)).First(&placeChecker); result != nil && result.Error != gorm.ErrRecordNotFound {
 		fmt.Println(result)
