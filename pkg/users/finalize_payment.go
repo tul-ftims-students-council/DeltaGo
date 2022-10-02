@@ -5,6 +5,7 @@ import (
 	"delta-go/pkg/common/utils"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
@@ -82,6 +83,15 @@ func (h handler) FinalizePayment(c *fiber.Ctx) error {
 
 	if result := h.DB.Create(&new_participant); result.Error != nil {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error.Error())
+	}
+
+	email_body, error := os.ReadFile("./statics/payment.html")
+	if error != nil {
+		panic("unable to read payment.html")
+	}
+	str := string(email_body)
+	if err := utils.SendEmail(email, "Delta - Płatność", str); err != nil {
+		fmt.Println(err)
 	}
 
 	return c.Status(fiber.StatusCreated).JSON(&user)
