@@ -14,9 +14,11 @@ func RegisterRoutes(app *fiber.App, db *gorm.DB) {
 		DB: db,
 	}
 
-	routes := app.Group("/users")
-	routes.Post("/register", h.Register)
-	routes.Get("/:email", h.GetUser)
-	routes.Get("/:email/payment/start", h.StartPayment)
-	routes.Post("/:email/payment/send", h.FinalizePayment)
+	routes_user := app.Group("/users")
+	routes_reservations := app.Group("/reservations")
+	routes_reservations.Get("/left", h.GetLeftReservations)
+	routes_user.Post("/register", h.Register)
+	routes_user.Get("/:email", h.GetUser)
+	routes_user.Get("/:email/payment/start", h.StartPayment)
+	routes_user.Post("/:email/payment/send", h.FinalizePayment)
 }

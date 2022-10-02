@@ -30,13 +30,15 @@ func (h handler) StartPayment(c *fiber.Ctx) error {
 	}
 	var placeChecker models.Place
 	format := "2006-01-02T15:04:05.999Z"
-	TimeNow := time.Now().Local()
-	Time := time.Now().Local().Add(time.Minute * 4 + time.Second * 20)
+	TimeNow := time.Now().UTC()
+	Time := time.Now().UTC().Add(time.Minute*4 + time.Second*20)
+	fmt.Println("teraz ", TimeNow)
+	fmt.Println("poźniej ", Time)
 
-	if result := h.DB.Where("user_email = ? AND is_sold = false AND date_till_expire > ?", email, TimeNow.Format(format)).First(&placeChecker); result != nil && result.Error != gorm.ErrRecordNotFound {
-		fmt.Println(result)
+	if result := h.DB.Where("user_email = ? AND is_sold = false AND date_till_expire > ?", email, TimeNow.Format(format)).First(&placeChecker); result.Error != gorm.ErrRecordNotFound {
 		return utils.HandleResponse(c, fiber.StatusConflict, "User already started payment")
 	}
+	fmt.Println(placeChecker)
 
 	if result := h.DB.Where(map[string]interface{}{"user_email": email, "is_sold": true}).First(&placeChecker); result != nil && result.Error != gorm.ErrRecordNotFound {
 		return utils.HandleResponse(c, fiber.StatusConflict, "User already bought a place")
@@ -53,5 +55,5 @@ func (h handler) StartPayment(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error.Error())
 	}
-	return utils.HandleResponse(c, fiber.StatusOK, string(Time.Format(format)))
+	return utils.HandleResponse(c, fiber.StatusOK, string(time.Now().UTC().Add(time.Minute*4+time.Second*20).Format(format)))
 }
