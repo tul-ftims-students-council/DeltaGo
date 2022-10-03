@@ -10,5 +10,5 @@ type Place struct {
 	gorm.Model
 	UserEmail      string    `json:"user_email"`
 	DateTillExpire time.Time `json:"till_expire"`
-	IsSold         bool      `json:"isSold"`
+	IsSold         bool      `json:"is_sold"`
 }

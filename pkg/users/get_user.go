@@ -23,6 +23,5 @@ func (h handler) GetUser(c *fiber.Ctx) error {
 	if result := h.DB.Where("email = ?", email).First(&user).Error; result == gorm.ErrRecordNotFound {
 		return fiber.NewError(fiber.StatusNotFound, result.Error())
 	}
-
 	return c.Status(fiber.StatusOK).JSON(&user)
 }
