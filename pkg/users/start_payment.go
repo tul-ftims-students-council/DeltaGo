@@ -55,5 +55,5 @@ func (h handler) StartPayment(c *fiber.Ctx) error {
 	if result.Error != nil {
 		return utils.HandleResponse(c, fiber.StatusInternalServerError, result.Error.Error())
 	}
-	return utils.HandleResponse(c, fiber.StatusOK, string(time.Now().UTC().Add(time.Minute*4+time.Second*20).Format(format)))
+	return utils.HandleResponse(c, fiber.StatusOK, string(time.Now().UTC().Add(time.Minute*120).Format(format)))
 }
