@@ -31,7 +31,7 @@ func (h handler) StartPayment(c *fiber.Ctx) error {
 	var placeChecker models.Place
 	format := "2006-01-02T15:04:05.999Z"
 	TimeNow := time.Now().UTC()
-	Time := time.Now().UTC().Add(time.Minute*4 + time.Second*20)
+	Time := time.Now().UTC().Add(time.Minute*120)
 	fmt.Println("teraz ", TimeNow)
 	fmt.Println("poźniej ", Time)
 
